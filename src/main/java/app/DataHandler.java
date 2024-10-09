@@ -1,17 +1,19 @@
 package app;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class DataHandler {
 
-    private final Object lock = new Object(); // Объект для синхронизации
+    private final Lock lock = new ReentrantLock(); // Об'єкт Lock
 
-    public synchronized int modify(int num) {
-        synchronized (lock) { // Блокировка объекта lock
-            try {
-                num = num * 3;
-                return num;
-            } finally {
-                // Разблокировка объекта lock
-            }
+    public int modify(int num) {
+        lock.lock(); // Блокування
+        try {
+            num = num * 3;
+            return num;
+        } finally {
+            lock.unlock(); // Розблокування
         }
     }
 }
